@@ -1,0 +1,38 @@
+{
+  "name": "@carlosxfelipe/react-native-ui",
+  "version": "1.0.0",
+  "description": "Reusable and customizable UI components for React Native apps.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-native": ">=0.68.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-native": "^0.70.0"
+  },
+  "keywords": [
+    "react-native",
+    "carousel",
+    "component"
+  ],
+  "author": {
+    "name": "Carlos Felipe Araujo",
+    "email": "carlosxfelipe@gmail.com",
+    "url": "https://github.com/carlosxfelipe"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlosxfelipe/react-native-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/carlosxfelipe/react-native-ui/issues"
+  },
+  "homepage": "https://github.com/carlosxfelipe/react-native-ui#readme"
+}
