@@ -21,6 +21,10 @@ yarn add @carlosxfelipe/react-native-ui
 
 A responsive and touch-friendly image carousel component.
 
+<p align="center">
+  <img src="./preview/carousel.gif" alt="Carousel animation" width="50%" />
+</p>
+
 #### Example Usage
 
 ```tsx
