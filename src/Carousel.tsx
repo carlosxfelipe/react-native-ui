@@ -1,19 +1,20 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import {
-  View,
-  ScrollView,
   Dimensions,
-  StyleSheet,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  Platform,
   Image,
+  ImageSourcePropType,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
   Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
 } from "react-native";
 
 interface ImageData {
   id: string | number;
-  source: string | number;
+  source: ImageSourcePropType;
 }
 
 interface Props {
