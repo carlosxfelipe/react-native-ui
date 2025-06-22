@@ -1,6 +1,6 @@
 {
   "name": "@carlosxfelipe/react-native-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Reusable and customizable UI components for React Native apps.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,8 +18,9 @@
   },
   "keywords": [
     "react-native",
+    "ui",
     "carousel",
-    "component"
+    "color-palette"
   ],
   "author": {
     "name": "Carlos Felipe Araujo",
