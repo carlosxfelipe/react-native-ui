@@ -1,16 +1,21 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type { ImageSourcePropType } from "react-native";
 import {
   Dimensions,
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   View,
 } from "react-native";
-import type { ImageSourcePropType } from "react-native";
 
 interface ImageData {
   id: string | number;
@@ -24,7 +29,30 @@ interface Props {
   autoplayInterval?: number;
   showIndicators?: boolean;
   indicatorColor?: string;
+  skeletonBackgroundColor?: string;
 }
+
+const SkeletonImage = ({
+  width,
+  height,
+  backgroundColor = "#e0e0e0",
+}: {
+  width: number;
+  height: number;
+  backgroundColor?: string;
+}) => {
+  return (
+    <View
+      style={{
+        width,
+        height,
+        borderRadius: 18,
+        backgroundColor,
+        position: "absolute",
+      }}
+    />
+  );
+};
 
 export const Carousel = ({
   height = 180,
@@ -33,16 +61,39 @@ export const Carousel = ({
   autoplayInterval = 3000,
   showIndicators = false,
   indicatorColor = "#000",
+  skeletonBackgroundColor = "#e0e0e0",
 }: Props) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const screenWidth = Dimensions.get("window").width;
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const scrollInterval = useRef<NodeJS.Timeout | null>(null);
   const scrollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Check if there are images to display
+  const hasImages = images.length > 0;
+  const placeholders = useMemo(
+    () =>
+      !hasImages
+        ? Array.from({ length: 3 }, (_, i) => ({ id: `skeleton-${i}` }))
+        : [],
+    [hasImages]
+  );
+
+  const [loadedImages, setLoadedImages] = useState<boolean[]>(() =>
+    new Array(images.length).fill(false)
+  );
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages((prev) => {
+      if (prev[index]) return prev;
+      const updated = [...prev];
+      updated[index] = true;
+      return updated;
+    });
+  };
 
   const imageWidth = screenWidth * 0.7;
   const sideSpacing = (screenWidth - imageWidth) / 2;
-  const gap = Platform.OS === "android" ? 48 : 16;
+  const gap = 16;
   const carouselEdgePadding = sideSpacing - gap / 2;
 
   const stopAutoplay = useCallback(() => {
@@ -52,6 +103,7 @@ export const Carousel = ({
   }, []);
 
   const startAutoplay = useCallback(() => {
+    if (!hasImages) return;
     stopAutoplay();
     scrollInterval.current = setInterval(() => {
       setCurrentIndex((prevIndex) => {
@@ -65,17 +117,24 @@ export const Carousel = ({
         return nextIndex;
       });
     }, autoplayInterval);
-  }, [images.length, imageWidth, gap, stopAutoplay]);
+  }, [
+    images.length,
+    imageWidth,
+    gap,
+    stopAutoplay,
+    hasImages,
+    autoplayInterval,
+  ]);
 
   useEffect(() => {
-    if (images.length > 0) {
+    if (hasImages) {
       startAutoplay();
     }
 
     return () => {
       stopAutoplay();
     };
-  }, [images, startAutoplay, stopAutoplay]);
+  }, [hasImages, startAutoplay, stopAutoplay]);
 
   const handleScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -96,29 +155,52 @@ export const Carousel = ({
           paddingHorizontal: carouselEdgePadding,
         }}
         onMomentumScrollEnd={handleScrollEnd}
+        scrollEnabled={hasImages} // disable scroll for placeholders
       >
-        {images.map((image) => (
-          <Pressable
-            key={image.id}
-            onPress={() => onPressImage?.(image.id)}
-            style={[
-              styles.imageContainer,
-              { width: imageWidth, marginHorizontal: gap / 2 },
-            ]}
-          >
-            <Image
-              style={[styles.image, { width: imageWidth, height }]}
-              source={
-                typeof image.source === "string"
-                  ? { uri: image.source }
-                  : image.source
-              }
-            />
-          </Pressable>
-        ))}
+        {(hasImages ? images : placeholders).map((item, index) => {
+          const imageItem = item as ImageData;
+
+          return (
+            <Pressable
+              key={item.id}
+              onPress={() => onPressImage?.(item.id)}
+              style={[
+                styles.imageContainer,
+                { width: imageWidth, marginHorizontal: gap / 2 },
+              ]}
+            >
+              {hasImages ? (
+                <>
+                  {!loadedImages[index] && (
+                    <SkeletonImage
+                      width={imageWidth}
+                      height={height}
+                      backgroundColor={skeletonBackgroundColor}
+                    />
+                  )}
+                  <Image
+                    style={[styles.image, { width: imageWidth, height }]}
+                    source={
+                      typeof imageItem.source === "string"
+                        ? { uri: imageItem.source }
+                        : imageItem.source
+                    }
+                    onLoadEnd={() => handleImageLoad(index)}
+                  />
+                </>
+              ) : (
+                <SkeletonImage
+                  width={imageWidth}
+                  height={height}
+                  backgroundColor={skeletonBackgroundColor}
+                />
+              )}
+            </Pressable>
+          );
+        })}
       </ScrollView>
 
-      {showIndicators && (
+      {showIndicators && hasImages && (
         <View style={styles.indicatorContainer}>
           {images.map((_, index) => (
             <View
