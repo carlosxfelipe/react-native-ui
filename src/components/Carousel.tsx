@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import {
   Dimensions,
   Image,
-  ImageSourcePropType,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
@@ -11,6 +10,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import type { ImageSourcePropType } from "react-native";
 
 interface ImageData {
   id: string | number;
