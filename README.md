@@ -29,14 +29,14 @@ An adaptive and touch-friendly image carousel component.
 
 #### Example Usage
 
+> Below is a usage example with both local and remote images.
+
 ```tsx
 import React from "react";
-import { View, Linking } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Carousel } from "@carlosxfelipe/react-native-ui";
 
-// Example using local images with require (uncomment to use)
-/*
-const images = [
+const localImages = [
   {
     id: 1,
     source: require("../assets/pexels/pexels-photo-10764538.jpeg"),
@@ -46,10 +46,8 @@ const images = [
     source: require("../assets/pexels/pexels-photo-1066859.jpeg"),
   },
 ];
-*/
 
-// Example using remote images with URI
-const images = [
+const remoteImages = [
   {
     id: 1,
     source: {
@@ -65,24 +63,14 @@ const images = [
 ];
 
 const handlePressImage = (id: string | number) => {
-  const links: Record<string | number, string> = {
-    1: "https://www.linkedin.com/in/carlosxfelipe/",
-    2: "https://github.com/carlosxfelipe",
-  };
-
-  const url = links[id];
-  if (url) {
-    Linking.openURL(url);
-  } else {
-    console.log("No action defined for image:", id);
-  }
+  console.log("Image pressed with ID:", id);
 };
 
 export default function App() {
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <View style={styles.container}>
       <Carousel
-        images={images}
+        images={remoteImages}
         showIndicators
         indicatorColor="red"
         onPressImage={handlePressImage}
@@ -93,7 +81,7 @@ export default function App() {
 }
 ```
 
-#### Props
+### Carousel Props
 
 | Prop               | Type                                                           | Description                                            |
 | ------------------ | -------------------------------------------------------------- | ------------------------------------------------------ |
@@ -103,6 +91,62 @@ export default function App() {
 | `autoplayInterval` | `number`                                                       | Interval for autoplay in ms. Default: `3000`.          |
 | `showIndicators`   | `boolean`                                                      | Shows indicator dots. Default: `false`.                |
 | `indicatorColor`   | `string`                                                       | Active indicator color. Default: `#000`.               |
+
+## Constants
+
+### Colors
+
+A collection of Material Design color palettes (shades from 50 to 900) ready to use in your React Native project.
+
+These colors follow the official [Material Design color system](https://material.io/design/color/the-color-system.html#color-theme-creation), and can be used to create consistent and visually appealing UI themes.
+
+### Example Usage
+
+```tsx
+import { Colors } from "@carlosxfelipe/react-native-ui";
+
+// Accessing a specific shade
+const primaryColor = Colors.blue.shade500; // #2196F3
+const accentColor = Colors.pink.shade200; // #F48FB1
+```
+
+### Available Color Palettes
+
+Each palette contains shades from `shade50` to `shade900`:
+
+- `red`
+- `pink`
+- `purple`
+- `deepPurple`
+- `indigo`
+- `blue`
+- `lightBlue`
+- `cyan`
+- `teal`
+- `green`
+- `lightGreen`
+- `lime`
+- `yellow`
+- `amber`
+- `orange`
+- `deepOrange`
+- `brown`
+- `grey`
+- `blueGrey`
+
+### Type Support
+
+If you're using TypeScript:
+
+```ts
+import type { ColorName, ColorsMap } from "@carlosxfelipe/react-native-ui";
+
+const someColorName: ColorName = "cyan"; // type-safe access
+
+type Props = {
+  colorName: keyof ColorsMap;
+};
+```
 
 ## License
 
