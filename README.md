@@ -83,15 +83,15 @@ export default function App() {
 
 ### Carousel Props
 
-| Prop                      | Type                                                           | Description                                                   |
-| ------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
-| `images`                  | `Array<{ id: string \| number, source: ImageSourcePropType }>` | Image list with unique IDs and source URIs or require.        |
-| `height`                  | `number`                                                       | Carousel height. Default: `180`.                              |
-| `onPressImage`            | `(id: string \| number) => void`                               | Triggered when an image is pressed.                           |
-| `autoplayInterval`        | `number`                                                       | Interval for autoplay in ms. Default: `3000`.                 |
-| `showIndicators`          | `boolean`                                                      | Shows indicator dots. Default: `false`.                       |
-| `indicatorColor`          | `string`                                                       | Active indicator color. Default: `#000`.                      |
-| `skeletonBackgroundColor` | `string`                                                       | Background color for loading placeholder. Default: `#e0e0e0`. |
+| Prop               | Type                                                           | Description                                               |
+| ------------------ | -------------------------------------------------------------- | --------------------------------------------------------- |
+| `images`           | `Array<{ id: string \| number, source: ImageSourcePropType }>` | Image list with unique IDs and source URIs or require.    |
+| `height`           | `number`                                                       | Carousel height. Default: `180`.                          |
+| `onPressImage`     | `(id: string \| number) => void`                               | Triggered when an image is pressed.                       |
+| `autoplayInterval` | `number`                                                       | Interval for autoplay in ms. Default: `3000`.             |
+| `showIndicators`   | `boolean`                                                      | Shows indicator dots. Default: `false`.                   |
+| `indicatorColor`   | `string`                                                       | Active indicator color. Default: `#000`.                  |
+| `isDarkMode`       | `boolean`                                                      | Enables dark mode skeleton placeholder. Default: `false`. |
 
 ## Constants
 
