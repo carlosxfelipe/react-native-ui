@@ -16,6 +16,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { CarouselSkeleton } from "./CarouselSkeleton";
 
 interface ImageData {
   id: string | number;
@@ -29,30 +30,8 @@ interface Props {
   autoplayInterval?: number;
   showIndicators?: boolean;
   indicatorColor?: string;
-  skeletonBackgroundColor?: string;
+  isDarkMode?: boolean;
 }
-
-const SkeletonImage = ({
-  width,
-  height,
-  backgroundColor = "#e0e0e0",
-}: {
-  width: number;
-  height: number;
-  backgroundColor?: string;
-}) => {
-  return (
-    <View
-      style={{
-        width,
-        height,
-        borderRadius: 18,
-        backgroundColor,
-        position: "absolute",
-      }}
-    />
-  );
-};
 
 export const Carousel = ({
   height = 180,
@@ -61,7 +40,7 @@ export const Carousel = ({
   autoplayInterval = 3000,
   showIndicators = false,
   indicatorColor = "#000",
-  skeletonBackgroundColor = "#e0e0e0",
+  isDarkMode = false,
 }: Props) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const screenWidth = Dimensions.get("window").width;
@@ -172,10 +151,10 @@ export const Carousel = ({
               {hasImages ? (
                 <>
                   {!loadedImages[index] && (
-                    <SkeletonImage
+                    <CarouselSkeleton
                       width={imageWidth}
                       height={height}
-                      backgroundColor={skeletonBackgroundColor}
+                      isDarkMode={isDarkMode}
                     />
                   )}
                   <Image
@@ -189,10 +168,10 @@ export const Carousel = ({
                   />
                 </>
               ) : (
-                <SkeletonImage
+                <CarouselSkeleton
                   width={imageWidth}
                   height={height}
-                  backgroundColor={skeletonBackgroundColor}
+                  isDarkMode={isDarkMode}
                 />
               )}
             </Pressable>
