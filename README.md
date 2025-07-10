@@ -19,136 +19,87 @@ yarn add @carlosxfelipe/react-native-ui
 
 ## Components
 
-### Carousel
+---
 
-An adaptive and touch-friendly image carousel component.
+### `Carousel`
 
-<p align="center">
-  <img src="./preview/carousel.gif" alt="Carousel preview" width="50%" />
-</p>
+A customizable horizontal image carousel with autoplay, image click handling, and indicator dots.
 
-#### Example Usage
+#### Props
 
-> Below is a usage example with both local and remote images.
+| Prop               | Type                                                      | Default      | Description                     |
+| ------------------ | --------------------------------------------------------- | ------------ | ------------------------------- |
+| `images`           | `{ id: string \| number; source: ImageSourcePropType }[]` | **required** | List of image data to show      |
+| `height`           | `number`                                                  | `180`        | Carousel height                 |
+| `onPressImage`     | `(id: string \| number) => void`                          | -            | Called when an image is pressed |
+| `autoplayInterval` | `number`                                                  | `3000`       | Autoplay interval in ms         |
+| `showIndicators`   | `boolean`                                                 | `false`      | Show indicator dots             |
+| `indicatorColor`   | `string`                                                  | `"blue"`     | Active indicator color          |
+| `isDarkMode`       | `boolean`                                                 | `false`      | Enables dark mode styling       |
 
 ```tsx
-import React from "react";
-import { StyleSheet, View } from "react-native";
 import { Carousel } from "@carlosxfelipe/react-native-ui";
-
-const localImages = [
-  {
-    id: 1,
-    source: require("../assets/pexels/pexels-photo-10764538.jpeg"),
-  },
-  {
-    id: 2,
-    source: require("../assets/pexels/pexels-photo-1066859.jpeg"),
-  },
-];
-
-const remoteImages = [
-  {
-    id: 1,
-    source: {
-      uri: "https://images.pexels.com/photos/10764538/pexels-photo-10764538.jpeg",
-    },
-  },
-  {
-    id: 2,
-    source: {
-      uri: "https://images.pexels.com/photos/1066859/pexels-photo-1066859.jpeg",
-    },
-  },
-];
-
-const handlePressImage = (id: string | number) => {
-  console.log("Image pressed with ID:", id);
-};
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Carousel
-        images={remoteImages}
-        showIndicators
-        indicatorColor="red"
-        onPressImage={handlePressImage}
-        // autoplayInterval={5000}
-      />
-    </View>
-  );
-}
 ```
 
-### Carousel Props
+---
 
-| Prop               | Type                                                           | Description                                               |
-| ------------------ | -------------------------------------------------------------- | --------------------------------------------------------- |
-| `images`           | `Array<{ id: string \| number, source: ImageSourcePropType }>` | Image list with unique IDs and source URIs or require.    |
-| `height`           | `number`                                                       | Carousel height. Default: `180`.                          |
-| `onPressImage`     | `(id: string \| number) => void`                               | Triggered when an image is pressed.                       |
-| `autoplayInterval` | `number`                                                       | Interval for autoplay in ms. Default: `3000`.             |
-| `showIndicators`   | `boolean`                                                      | Shows indicator dots. Default: `false`.                   |
-| `indicatorColor`   | `string`                                                       | Active indicator color. Default: `#000`.                  |
-| `isDarkMode`       | `boolean`                                                      | Enables dark mode skeleton placeholder. Default: `false`. |
+### `Tooltip`
 
-## Constants
+Displays a tooltip message when the wrapped element is pressed. Supports placement and dark mode.
 
-### Colors
+#### Props
 
-A collection of Material Design color palettes (shades from 50 to 900) ready to use in your React Native project.
+| Prop                  | Type                                     | Default      | Description                           |
+| --------------------- | ---------------------------------------- | ------------ | ------------------------------------- |
+| `message`             | `string`                                 | **required** | Tooltip text                          |
+| `children`            | `React.ReactElement`                     | **required** | The element that triggers the tooltip |
+| `placement`           | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"`   | Tooltip position                      |
+| `margin`              | `number`                                 | `8`          | Space between element and tooltip     |
+| `isDarkMode`          | `boolean`                                | `false`      | Enables dark theme                    |
+| `textColor`           | `string`                                 | `"#fff"`     | Light mode text color                 |
+| `textColorDark`       | `string`                                 | `"#333"`     | Dark mode text color                  |
+| `backgroundColor`     | `string`                                 | `"#333"`     | Light mode background                 |
+| `backgroundColorDark` | `string`                                 | `"#fff"`     | Dark mode background                  |
 
-These colors follow the official [Material Design color system](https://material.io/design/color/the-color-system.html#color-theme-creation), and can be used to create consistent and visually appealing UI themes.
+```tsx
+import { Tooltip } from "@carlosxfelipe/react-native-ui";
+```
 
-### Example Usage
+---
+
+### `Skeleton`
+
+A loading placeholder with animated shimmer. Ideal for loading states in lists or images.
+
+#### Props
+
+| Prop                  | Type                   | Default     | Description                     |
+| --------------------- | ---------------------- | ----------- | ------------------------------- |
+| `width`               | `DimensionValue`       | `"100%"`    | Width of the skeleton           |
+| `height`              | `DimensionValue`       | `100`       | Height of the skeleton          |
+| `borderRadius`        | `number`               | `8`         | Border radius                   |
+| `isDarkMode`          | `boolean`              | `false`     | Enables dark theme              |
+| `lightBaseColor`      | `string`               | `"#e0e0e0"` | Base color for light theme      |
+| `lightHighlightColor` | `string`               | `"#f5f5f5"` | Highlight color for light theme |
+| `darkBaseColor`       | `string`               | `"#333"`    | Base color for dark theme       |
+| `darkHighlightColor`  | `string`               | `"#555"`    | Highlight color for dark theme  |
+| `style`               | `StyleProp<ViewStyle>` | `undefined` | Additional style                |
+
+```tsx
+import { Skeleton } from "@carlosxfelipe/react-native-ui";
+```
+
+---
+
+### `Colors`
+
+A full set of Material Design color palettes, grouped by color name and shade level.
+
+Each color (e.g., `Colors.blue`) has the following shades:  
+`shade50`, `shade100`, ..., `shade900`.
 
 ```tsx
 import { Colors } from "@carlosxfelipe/react-native-ui";
 
-// Accessing a specific shade
-const primaryColor = Colors.blue.shade500; // #2196F3
-const accentColor = Colors.pink.shade200; // #F48FB1
+const primary = Colors.blue.shade500;
 ```
-
-### Available Color Palettes
-
-Each palette contains shades from `shade50` to `shade900`:
-
-- `red`
-- `pink`
-- `purple`
-- `deepPurple`
-- `indigo`
-- `blue`
-- `lightBlue`
-- `cyan`
-- `teal`
-- `green`
-- `lightGreen`
-- `lime`
-- `yellow`
-- `amber`
-- `orange`
-- `deepOrange`
-- `brown`
-- `grey`
-- `blueGrey`
-
-### Type Support
-
-If you're using TypeScript:
-
-```ts
-import type { ColorName, ColorsMap } from "@carlosxfelipe/react-native-ui";
-
-const someColorName: ColorName = "cyan"; // type-safe access
-
-type Props = {
-  colorName: keyof ColorsMap;
-};
-```
-
-## License
-
-MIT
