@@ -11,14 +11,12 @@ import {
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   View,
 } from "react-native";
-import { CarouselSkeleton } from "./CarouselSkeleton";
-import { CarouselWeb } from "./CarouselWeb";
+import { SkeletonView } from "./SkeletonView";
 
 interface ImageData {
   id: string | number;
@@ -41,7 +39,7 @@ export const Carousel = ({
   onPressImage,
   autoplayInterval = 3000,
   showIndicators = false,
-  indicatorColor = "#000",
+  indicatorColor = "blue",
   isDarkMode = false,
 }: Props) => {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -49,7 +47,6 @@ export const Carousel = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Check if there are images to display
   const hasImages = images.length > 0;
   const placeholders = useMemo(
     () =>
@@ -124,72 +121,64 @@ export const Carousel = ({
     startAutoplay();
   };
 
-  const isWeb = Platform.OS === "web";
-
   return (
     <View style={[styles.carouselContainer, { height }]}>
-      {isWeb ? (
-        <CarouselWeb
-          images={images}
-          height={height}
-          currentIndex={currentIndex}
-        />
-      ) : (
-        <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={imageWidth + gap}
-          decelerationRate="fast"
-          contentContainerStyle={{
-            paddingHorizontal: carouselEdgePadding,
-          }}
-          onMomentumScrollEnd={handleScrollEnd}
-          scrollEnabled={hasImages} // disable scroll for placeholders
-        >
-          {(hasImages ? images : placeholders).map((item, index) => {
-            const imageItem = item as ImageData;
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={imageWidth + gap}
+        decelerationRate="fast"
+        contentContainerStyle={{
+          paddingHorizontal: carouselEdgePadding,
+        }}
+        onMomentumScrollEnd={handleScrollEnd}
+        scrollEnabled={hasImages}
+      >
+        {(hasImages ? images : placeholders).map((item, index) => {
+          const imageItem = item as ImageData;
 
-            return (
-              <Pressable
-                key={item.id}
-                onPress={() => onPressImage?.(item.id)}
-                style={[
-                  styles.imageContainer,
-                  { width: imageWidth, marginHorizontal: gap / 2 },
-                ]}
-              >
-                {hasImages ? (
-                  <>
-                    {!loadedImages[index] && (
-                      <CarouselSkeleton
-                        width={imageWidth}
-                        height={height}
-                        isDarkMode={isDarkMode}
-                      />
-                    )}
-                    <Image
-                      style={[styles.image, { width: imageWidth, height }]}
-                      source={
-                        typeof imageItem.source === "string"
-                          ? { uri: imageItem.source }
-                          : imageItem.source
-                      }
-                      onLoadEnd={() => handleImageLoad(index)}
+          return (
+            <Pressable
+              key={item.id}
+              onPress={() => onPressImage?.(item.id)}
+              style={[
+                styles.imageContainer,
+                { width: imageWidth, marginHorizontal: gap / 2 },
+              ]}
+            >
+              {hasImages ? (
+                <>
+                  {!loadedImages[index] && (
+                    <SkeletonView
+                      width={imageWidth}
+                      height={height}
+                      borderRadius={18}
+                      isDarkMode={isDarkMode}
                     />
-                  </>
-                ) : (
-                  <CarouselSkeleton
-                    width={imageWidth}
-                    height={height}
-                    isDarkMode={isDarkMode}
+                  )}
+                  <Image
+                    style={[styles.image, { width: imageWidth, height }]}
+                    source={
+                      typeof imageItem.source === "string"
+                        ? { uri: imageItem.source }
+                        : imageItem.source
+                    }
+                    onLoadEnd={() => handleImageLoad(index)}
                   />
-                )}
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-      )}
+                </>
+              ) : (
+                <SkeletonView
+                  width={imageWidth}
+                  height={height}
+                  borderRadius={18}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+            </Pressable>
+          );
+        })}
+      </ScrollView>
 
       {showIndicators && hasImages && (
         <View style={styles.indicatorContainer}>
