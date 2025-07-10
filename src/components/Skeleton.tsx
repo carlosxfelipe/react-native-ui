@@ -7,7 +7,7 @@ import {
   type DimensionValue,
 } from "react-native";
 
-interface SkeletonViewProps {
+interface SkeletonProps {
   width?: DimensionValue;
   height?: DimensionValue;
   borderRadius?: number;
@@ -19,7 +19,7 @@ interface SkeletonViewProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export const SkeletonView = ({
+export const Skeleton = ({
   width = "100%",
   height = 100,
   borderRadius = 8,
@@ -29,7 +29,7 @@ export const SkeletonView = ({
   darkBaseColor = "#333",
   darkHighlightColor = "#555",
   style,
-}: SkeletonViewProps) => {
+}: SkeletonProps) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

@@ -16,7 +16,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { SkeletonView } from "./SkeletonView";
+import { Skeleton } from "./Skeleton";
 
 interface ImageData {
   id: string | number;
@@ -150,7 +150,7 @@ export const Carousel = ({
               {hasImages ? (
                 <>
                   {!loadedImages[index] && (
-                    <SkeletonView
+                    <Skeleton
                       width={imageWidth}
                       height={height}
                       borderRadius={18}
@@ -168,7 +168,7 @@ export const Carousel = ({
                   />
                 </>
               ) : (
-                <SkeletonView
+                <Skeleton
                   width={imageWidth}
                   height={height}
                   borderRadius={18}
